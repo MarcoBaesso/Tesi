@@ -147,10 +147,25 @@
 {0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
 
 %**STILE PAGINA**********************************
+\renewcommand{\subsectionmark}[1]{%
+  \ifsubsectioninheader
+    \def\subsectiontitle{: #1}%
+  \else
+    \def\subsectiontitle{}%
+  \fi
+}  
+
 \fancypagestyle{stilecapitolinumerati}{
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[LE,RO]{\slshape\leftmark}
+\newif\ifsubsectioninheader
+\def\subsectiontitle{}
+
+
+\fancyhead[L]{\nouppercase{\rightmark\ifsubsectioninheader\subsectiontitle\fi}}
+
+%LE,RO
+\fancyhead[R]{\nouppercase{\slshape\leftmark}}
 \rfoot{\thepage ~di~\pageref{TotPages}}
 \renewcommand{\headrulewidth}{1.5pt}
 \renewcommand{\footrulewidth}{1.5pt}
