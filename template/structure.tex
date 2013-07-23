@@ -1,0 +1,253 @@
+% aggiunto riga sotto per risolvere problema di visualizzazione su Acrobat Reader sun W7
+% http://tex.stackexchange.com/questions/64448/how-to-overcome-acrobat-reader-error-131-with-a-pdflatex-doc
+\pdfminorversion=4
+\documentclass[a4paper,11pt]{article}
+
+%Non modificare
+%*****nuovi comandi************************
+%fornisce il caption per riferirsi ad una particolare sezione
+\newcommand{\numref}[1]{\textsf{\textsl{``\nameref{#1}'' (\ref{#1})}}}
+%**IMPORTAZIONE PACKAGE**************************
+\usepackage{ifthen}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{xspace}
+\usepackage{float}
+\usepackage{chapterbib}
+\usepackage{graphicx, subfigure}
+\usepackage[a4paper,top=3cm,bottom=3cm,left=3cm,right=3cm,bindingoffset=5mm]{geometry}
+\usepackage[colorlinks=true, urlcolor=blue, citecolor=black, linkcolor=black, hyperindex, breaklinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{totpages}
+\usepackage{tabularx, array}
+\usepackage{dcolumn}
+\usepackage{epstopdf}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{longtable}
+\usepackage{multirow}
+\usepackage{calc}
+\usepackage{eurosym}
+\usepackage{datatool}
+\usepackage[bottom]{footmisc}
+\usepackage{listings} % used to report code
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage[nonumberlist,acronym,toc]{glossaries}
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{wallpaper}
+\usepackage{grffile}
+\usepackage{soul}
+%\usepackage{floatflt}
+\usepackage{pgf}
+\usepackage{caption}
+\usepackage{subfigure}
+
+\captionsetup{tableposition=top, figureposition=bottom, font=small}
+
+
+%scalegraphics
+\makeatletter
+\def\ScaleIfNeeded{%
+\ifdim\Gin@nat@width>\textwidth
+  \textwidth
+\else
+  200px
+\fi
+}
+\makeatother
+\def\scalegraphics#1{
+  \includegraphics[width=\ScaleIfNeeded]{#1}
+}
+
+%glossary
+\newglossarystyle{altlistgroupmod}{
+\glossarystyle{altlistgroup}
+\renewcommand{\glsgroupskip}{} 
+}
+\glossarystyle{altlistgroupmod}
+
+% Listings
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dkred}{rgb}{0.6,0,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{light-gray}{gray}{0.95}
+
+\lstset{
+  language=C++,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+
+%soul color
+\sethlcolor{light-gray}
+
+%Tikz tree
+\makeatletter
+\newcount\dirtree@lvl
+\newcount\dirtree@plvl
+\newcount\dirtree@clvl
+\def\dirtree@growth{%
+  \ifnum\tikznumberofcurrentchild=1\relax
+  \global\advance\dirtree@plvl by 1
+  \expandafter\xdef\csname dirtree@p@\the\dirtree@plvl\endcsname{\the\dirtree@lvl}
+  \fi
+  \global\advance\dirtree@lvl by 1\relax
+  \dirtree@clvl=\dirtree@lvl
+  \advance\dirtree@clvl by -\csname dirtree@p@\the\dirtree@plvl\endcsname
+  \pgf@xa=1cm\relax
+  \pgf@ya=-0.5cm\relax
+  \pgf@ya=\dirtree@clvl\pgf@ya
+  \pgftransformshift{\pgfqpoint{\the\pgf@xa}{\the\pgf@ya}}%
+  \ifnum\tikznumberofcurrentchild=\tikznumberofchildren
+  \global\advance\dirtree@plvl by -1
+  \fi
+}
+
+\tikzset{
+  dirtree/.style={
+    growth function=\dirtree@growth,
+    every node/.style={anchor=north},
+    every child node/.style={anchor=west},
+    edge from parent path={(\tikzparentnode\tikzparentanchor) |- (\tikzchildnode\tikzchildanchor)}
+  }
+}
+\makeatother
+
+% Glossaries
+\makeglossaries
+\renewcommand*{\glspostdescription}{}
+\renewcommand*{\glssymbolsgroupname}{Simboli}%
+
+
+% Aumento profondità subsections
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+%**STILE PAGINA**********************************
+\fancypagestyle{stilecapitolinumerati}{
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE,RO]{\slshape\leftmark}
+\rfoot{\thepage ~di~\pageref{TotPages}}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\footrulewidth}{1.5pt}
+}
+
+\fancypagestyle{stilecapitolinonnumerati}{
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage ~di~\pageref{TotPages}}
+\renewcommand{\headrulewidth}{1.5pt}
+\renewcommand{\footrulewidth}{1.5pt}
+}
+
+%no indentazione paragrafo
+\setlength{\parindent}{0pt}
+
+\setlength{\headheight}{25pt}
+
+%**PRIMA PAGINA***************************
+
+\begin{document}
+%Centra il testo
+\input{../template/tesi-config}
+
+%**************************************************************
+% Frontespizio 
+%**************************************************************
+\begin{titlepage}
+
+\begin{center}
+
+\begin{LARGE}
+\textbf{\myUni}\\
+\end{LARGE}
+
+\vspace{10pt}
+
+\begin{Large}
+\textsc{\myDepartment}\\
+\end{Large}
+
+\vspace{10pt}
+
+\begin{large}
+\textsc{\myFaculty}\\
+\end{large}
+
+\vspace{30pt}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[height=6cm]{../template/img/logo-unipd}
+\end{center}
+\end{figure}
+\vspace{30pt} 
+
+\begin{LARGE}
+\begin{center}
+\textbf{\myTitle}\\
+\end{center}
+\end{LARGE}
+
+\vspace{10pt} 
+
+\begin{large}
+\textsl{\myDegree}\\
+\end{large}
+
+\vspace{40pt} 
+
+\begin{large}
+\begin{flushleft}
+\textit{Relatore}\\ 
+\vspace{5pt} 
+Prof. \myProf
+\end{flushleft}
+
+\vspace{0pt} 
+
+\begin{flushright}
+\textit{Laureando}\\ 
+\vspace{5pt} 
+\myName
+\end{flushright}
+\end{large}
+
+\vspace{40pt}
+
+\line(1, 0){338} \\
+\begin{normalsize}
+\textsc{Anno Accademico \myAA}
+\end{normalsize}
+
+\end{center}
+\end{titlepage} 
+
+\newpage
+
+%si usa la numerazione romana per gli indici e la tabella delle modifiche
+\pagenumbering{Roman}
+%************************************************

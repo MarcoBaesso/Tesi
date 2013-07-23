@@ -1,0 +1,35 @@
+%importa variabili utili
+\input{../template/config}
+
+\def\DOCUMENTO 		{Documento scheletro}
+\def\VERSIONE 		{0.1}
+
+\def\REDATTORI		{Cognome Nome \\& Cognome Nome \\& Cognome Nome}
+\def\VERIFICATORI	{Cognome Nome \\& Cognome Nome \\& Cognome Nome}
+\def\RESPONSABILE	{Cognome Nome}
+\def\USO			{Interno}
+\def\DESCRIZIONE	{Documento scheletro per tutti i documenti del gruppo {\GRUPPO} per il progetto {\PROGETTO} che risponde all'email {\EMAIL}}
+\def\DISTRIBUZIONE	{\COMMITTENTE \\& \PROPONENTE}
+
+\def\INDICE		{true} 	%abilita - disabilita l'indice
+\def\TABELLE	{true} 	%abilita - disabilita l'indice delle tabelle
+\def\FIGURE		{true} 	%abilita - disabilita l'indice delle figure
+
+\def\MODIFICHE	{
+Descrizione modifica & Cognome Nome & 2012-11-02 & 1.0 \tabularnewline \hline
+Descrizione modifica & Cognome Nome & 2012-11-02 & 0.1 \tabularnewline
+}
+
+%importa la struttura
+\input{../template/structure}
+%importa gli indici
+\input{../template/index}
+
+\section{Esempio}
+\input{sections/example}
+\newpage
+
+\end{document}
+
+
+

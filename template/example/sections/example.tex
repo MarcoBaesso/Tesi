@@ -1,0 +1,69 @@
+
+\subsection{Testo}
+\LaTeX \\
+\textbf{testo in grassetto} \\
+\textit{testo in corsivo} \\
+\underline{testo sottolineato} \\
+\texttt{testo in monospace} \\
+\uppercase{testo in maiuscolo} \\
+Questo testo non dovrebbe stare qui..\footnote{ma a piè pagina} \\
+
+
+
+\subsection{Elenco puntato}
+\textbf{Titolo elenco puntato:}
+\begin{itemize}
+\item Primo Punto;
+\item Secondo Punto;
+\item Terzo Punto;
+\item
+	\begin{itemize}
+	\item Primo Punto;
+	\item Secondo Punto;
+	\item Terzo Punto.
+	\end{itemize}
+\end{itemize}
+
+\subsection{Tabella}
+\begin{longtable}{|>{\centering}p{6cm}| >{\centering}m{3cm}| >{\centering}m{3cm}|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Header 0}} &
+    \multicolumn{1}{c|}{\textbf{Header 1}} &
+    \multicolumn{1}{c|}{\textbf{Header 2}}\\ %\tabularnewline 
+      \hline
+        Cella 0.0 & Cella 1.0 & Cella 2.0 \tabularnewline
+		Cella 0.1 & Cella 1.1 & Cella 2.1 \tabularnewline
+		Cella 0.2 & Cella 1.2 & Cella 2.2 \tabularnewline
+      \hline
+    \caption{Tabella d'esempio}
+    \label{tab: Tabella d'esempio}
+  \end{longtable}
+
+\subsection{Immagine}
+\begin{figure}[H]
+\centering % per centrare l'immagine (opzionale)
+\includegraphics[width=200px]{img/example.png}
+\caption{Immagine d'esempio}
+\label{fig:immagine esempio}
+\end{figure}
+
+\subsection{UseCase}
+Utente autenticato interagisce con il sistema dopo essersi identificato al sistema.
+\begin{figure}[H]
+  \centering  
+  \includegraphics[scale=0.95]{img/ucsample.pdf}
+  \caption{Caso d'uso 2 (UC2) - Utente autenticato}\label{fig:uc_utente_loggato} 
+\end{figure}
+\begin{itemize}
+	\item \textbf{Attori}: utente autenticato;
+	\item \textbf{Scopo e descrizione}: il sistema gestisce le richieste di un utente che si è identificato; 
+	\item \textbf{Pre-condizioni}: l'utente ha effettuato il login e il sistema è in attesa di input da parte dell'utente;
+	\item \textbf{Post-condizioni}: il sistema ha gestito le richieste dell'utente(voti, suggerimenti, commenti) ed è pronto per nuove operazioni;
+	\item \textbf{Flusso principale degli eventi}:
+		\begin{enumerate}
+		\item l'utente può dare uno o più voti ad un progetto (UC2.1);
+		\item l'utente può suggerire un progetto ad utenti che potrebbero essere interessati (UC2.2);
+		\item l'utente può lasciare un commento al progetto al fine di dare un consiglio al proponente (UC2.3);
+		\item l'utente può gestire le informazioni del proprio profilo (UC2.4).
+		\end{enumerate}
+\end{itemize}

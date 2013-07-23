@@ -1,0 +1,21 @@
+%************************************************
+%Inserisce il link all'indice
+%\addcontentsline{toc}{section}{Indice}
+\ifthenelse{\equal{\INDICE}{true}} 
+{\tableofcontents \newpage}
+
+%se è stata impostata a true la variabile per la lista delle tabelle, la mostra
+\ifthenelse{\equal{\TABELLE}{true}} 
+{\listoftables \newpage}{}
+
+%se è stata impostata a true la variabile per la lista delle figure, la mostra
+\ifthenelse{\equal{\FIGURE}{true}}
+{\listoffigures \newpage}{}
+
+%da qui comincia la numerazione normale
+\pagenumbering{arabic}
+
+%separatore per individuare l'inizio del testo
+\iffalse
+AOjvdYTJD7mcIIYItfsNiYPbmTTogRSP9hrrb2XPE1laMyQ9NHrPgTCTxnW0eV1YcM3Wqh7t5qThjczeXWq3O5FJ7BBQjoWZovC5
+\fi

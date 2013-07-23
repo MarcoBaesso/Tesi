@@ -1,0 +1,61 @@
+
+%importa variabili utili
+%\input{../template/config}
+
+\def\INDICE		{true} 		%abilita - disabilita l'indice
+\def\TABELLE	{true} 		%abilita - disabilita l'indice delle tabelle
+\def\FIGURE		{true} 		%abilita - disabilita l'indice delle figure
+
+%importa la struttura
+\input{../template/structure}
+%importa gli indici
+\input{../template/index}
+
+\pagestyle{stilecapitolinumerati}
+
+\section[Introduzione]{Introduzione}
+\input{sections/introduzione}
+\newpage
+
+\section{Dominio applicativo}
+\input{sections/dominio}
+\newpage
+
+\section{Pianificazione}
+\input{sections/pianificazione}
+\newpage
+
+\section{Analisi dei requisiti}
+\input{sections/analisi}
+\newpage
+
+\section{OnePointProject}
+\input{sections/onepoint}
+\newpage
+
+\section{Progettazione}
+\input{sections/progettazione}
+\newpage
+
+\section{Processi di revisione adottati}
+\input{sections/revisione}
+\newpage
+
+\section{Implementazione}
+\input{sections/codifica}
+\newpage
+
+\section{Conclusioni}
+\input{sections/conclusioni}
+\newpage
+
+\pagestyle{stilecapitolinonnumerati}
+
+\section*{Glossario}
+\input{sections/glossario}
+\newpage
+
+\section*{Bibliografia}
+\input{sections/bibliografia}
+\newpage
+\end{document}
