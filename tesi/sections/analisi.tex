@@ -1,4 +1,7 @@
-Durante l\textquoteright{}attivit\`{a} di stage sono stati riassunti i requisiti specificati per il progetto in diagrammi dei casi d\textquoteright{}uso al fine di specificare nella maniera pi\`{u} chiara e semplice possibile le specifiche per il progetto. In questa sezione viene presentato il minimo indispensabile per far comprendere quello in cui consisteva il dominio del progetto.  
+Durante l\textquoteright{}attivit\`{a} di stage sono stati riassunti i requisiti del progetto in diagrammi dei casi d\textquoteright{}uso al fine di specificare nella maniera pi\`{u} chiara e semplice possibile le specifiche per il progetto. In questa sezione viene presentato il minimo indispensabile per far comprendere il dominio del progetto. Iniziando dapprima con una descrizione sullo stato del software a inizio stage e quindi prima delle operazioni di manutenzione richieste.
+
+\subsection{Stato software a inizio stage}
+Il software permette di effettuare una programmazione delle attivit\`{a} inserendo per queste data di inizio, di fine e durata. La maturazione dell\textquoteright{}attivit\`{a} viene calcolata in base alla durata calcolando di default \textit{8 ore} lavorative giornaliere ed escludendo nei calcoli il sabato e le festivit\`{a}. Se una risorsa viene assegnata all\textquoteright{}attivit\`{a} per un certo numero di giorni lavorativi, allora il software stabilisce che questa risorsa ha effettuato nei giorni stabiliti la stessa percentuale di ore di lavoro. Il software non considera se una risorsa \`{e} occupata in altre attivit\`{a} nella stesso periodo. Se ad una attivit\`{a} viene assegnata una risorsa con un certo numero di ore di impegno, allora per la durata dell\textquoteright{}attivit\`{a} la risorsa \`{e} stata impiegata giorno per giorno la stessa frazione di tempo.
 
 \subsection{Casi d\textquoteright{}uso}
 
@@ -65,4 +68,83 @@ Durante l\textquoteright{}attivit\`{a} di stage sono stati riassunti i requisiti
 	\item \textbf{creazione gerarchie di risorse}: l\textquoteright{}utente pu\`{o} specificare delle gerarchie di risorse tale che per una risorsa figlio \`{e} impostabile la possibilit\`{a} di ereditare o meno la configurazione del padre (UC1.2.4);
 	\end{itemize}}
 \item[Postcondizione per successo:]{il sistema aggiorna nel database le propriet\`{a} di configurazione delle risorse.}
+\end{description}
+
+\subsection{Lista requisiti}
+Per la stesura dei requisiti \`{e} stato deciso di seguire le seguenti regole di classificazione:
+
+\begin{doublespace}
+\begin{center}
+\emph{Tipo.Priorit\`{a}.(X.Y.V.W.Z)}
+\par\end{center}
+\end{doublespace}
+
+Dove:
+\begin{itemize}
+\item \textbf{Tipo}: tipo di requisito
+
+\begin{itemize}
+\item \textbf{RF}: requisito funzionale
+\end{itemize}
+
+\item \textbf{Priorit\`{a}}: priorit\`{a} del requisito
+
+\begin{itemize}
+\item \textbf{ob}: requisito obbligatorio
+\item \textbf{de}: requisito desiderabile
+
+\end{itemize}
+\item \textbf{X.Y.V.W.Z}: numerazione di tipo gerarchica del requisito. Ad ogni requisito diverso dovr\`{a} aumentare la numerazione X. La presenza delle
+numerazioni Y, V, W e Z \`{e} opzionale. Le numerazioni di X, Y, V, W e Z partiranno da uno
+\end{itemize}
+Esempi: RF.ob.1.2.1, RF.de.2, RF.ob.1.2.4.2.1, ...
+
+\subsubsection{Requisiti funzionali}
+In questo paragrafo verranno elencati i principali requisiti relativi al progetto.
+
+\begin{description}
+
+\item[RF.ob.1]: Il software nell\textquoteright{}inserimento delle attivit\`{a} deve permettere l\textquoteright{}impostazione di informazioni sull\textquoteright{}inizio e sulla fine.
+	\begin{description}
+	\item[RF.ob.1.1]: Il software deve permettere l\textquoteright{}impostazione della data di inizio e di fine.
+	\item[RF.ob.1.2]: Il software deve permettere l\textquoteright{}impostazione dell\textquoteright{}ora di inizio e di fine.
+	\end{description}
+\item[RF.ob.2]: Il software nell\textquoteright{}inserimento delle attivit\`{a} deve permettere l\textquoteright{}inserimento di una durata con un livello di precisione al minuto, nel formato \textit{dd-hh-mm}.
+\item[RF.ob.3]: Se \`{e} stata modificata la durata e la data di fine il software deve effetture l\textquoteright{}aggiornamento della data di fine considerando la durata modificata.
+\item[RF.ob.4]: Il software dovr\`{a} calcolare la data di fine partendo dalla data di inizio e sommando la durata pianificata.
+	\begin{description}
+	\item[RF.ob.4.1]: Il software deve calcolare il grado di avanzamento, quindi di maturazione dell\textquoteright{}attivit\`{a}, al fine di calcolare la data di fine, automaticamente.
+		\begin{description}
+		\item[RF.ob.4.1.1]: L\textquoteright{}ordine di calcolo deve attenersi all\textquoteright{}ordine stabilito per il WBS. 
+			\begin{description}
+			\item[RF.ob.4.1.1.1]: Il software deve considerare che una certa risorsa non pu\`{o} essere utilizzata se la stessa \`{e} impiegata in un\textquoteright{}altra attivit\`{a} nella stessa frazione di tempo.
+			\item[RF.ob.4.1.1.2]: Il software deve considerare la disponibilit\`{a} delle risorse, cio\`{e} deve considerare il calendario configurato dall\textquoteright{}utente.
+			\item[RF.ob.4.1.1.3]: Il software deve considerare che per una certa attivit\`{a} le risorse sono assegnate per una certa quantit\`{a} di ore. 
+			\end{description}
+		\item[RF.ob.4.1.2]: Il software dovr\`{a} considerare tipologie di calcolo diverse in relazione al tipo di risorse interessate.
+			\begin{description}
+			\item[RF.ob.4.1.2.1]: Il software conosce i tipi di risorsa interessati, ma non devono essere impostabili dall\textquoteright{}utente.
+			\item[RF.ob.4.1.2.2]: La tipologia di risorse impiegate influenza la durata impostata sull\textquoteright{}attivit\`{a}.
+				\begin{description}
+				\item[RF.ob.4.1.2.2.1]: Il software se nello stesso minuto verifica la disponibilit\`{a} di pi\`{u} risorse strumentali allora il grado di maturazione dell\textquoteright{}attivit\`{a} crescer\`{a} di un minuto e l\textquoteright{}impegno residuo delle risorse disponibili in quel minuto aumenter\`{a} di \textit{1 minuto}.
+				\item[RF.ob.4.1.2.2.2]:Il software se nello stesso minuto verifica la disponibilit\`{a} di pi\`{u} risorse umane allora il grado di maturazione dell\textquoteright{}attivit\`{a} crescer\`{a} di un minuto e l\textquoteright{}impegno residuo delle risorse disponibili in quel minuto aumenter\`{a} della seguente quantit\`{a}: \textit{$ \log_2 n $ , con n=numero di risorse disponibili}.
+				\end{description}
+			\end{description}
+		\item[RF.ob.4.1.3]: Il software deve effettuare l\textquoteright{}aggiornamento delle durate, ovvero il calcolo della durata delle attivit\`{a} nel momento in cui l\textquoteright{}utente decide di salvare il WBS.
+		\end{description}
+	\end{description}
+\item[RF.ob.5]: Il software deve permettere di effettuare una configurazione delle risorse.
+	\begin{description}
+	\item[RF.ob.5.1]: Il software deve permettere di stabilire delle gerarchie di risorse.
+		\begin{description}
+		\item[RF.ob.5.1.1]: Le risorse ereditano per default le configurazioni della risorsa padre.
+		\item[RF.ob.5.1.2]: Le risorse appartenenti ad una gerarchia possono non ereditare, in base alle scelte dell\textquoteright{}utente, alcune propriet\`{a} dalla risorsa padre.
+		\end{description}
+	\item[RF.ob.5.2]: Il software deve permettere l\textquoteright{}assegnazione delle fascie orarie in cui una certa risorsa pu\`{o} lavorare.
+	\item[RF.ob.5.3]: Il software deve permettere di impostare se una certa risorsa pu\`{o} o meno lavorare nelle festivit\`{a}.
+	\item[RF.ob.5.4]: Il software deve permettere di impostare le date in cui una risorsa \`{e} bloccata.
+		\begin{description}
+		\item[RF.ob.5.4.1]: Una risorsa pu\`{o} non essere disponibile in \textit{1 o pi\`{u}} fascie orarie della data scelta, oppure durante le \textit{24 ore} della data scelta.
+		\end{description}
+	\end{description}
 \end{description}
