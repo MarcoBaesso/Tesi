@@ -1,0 +1,36 @@
+\subsection{MVC}
+
+\subsection{Database}
+L\textquoteright{}applicativo per relazionarsi con il database utilizza Hibernate. Il file di mapping viene creato in modo automatico utilizzando dei file XML. L\textquoteright{}applicativo predisponde dei file XML per ogni classe i cui oggetti \`{e} necessario rendere persistenti. Questi file purtroppo non hanno uno schema predefinito da seguire e quindi obbligano il programmatore estraneo al team di sviluppo ad attenersi ai file gi\`{a} presenti in caso di modifiche o aggiunte da parte di quest\textquoteright{}ultimo. Il tutto \`{e} molto comodo, ma il principale svantaggio di questa scelta implementativa \`{e} che le classi Java presentano delle dipendenze cicliche. Tra breve dar\`{o} una spiegazione a riguardo; in OnePointProject possono presentarsi tre casi, che ora illustrer\`{o}.
+
+\subparagraph{Attributo il cui tipo non \`{e} definito dall\textquoteright{}utente} \quad \quad \\ \\
+La sintassi da utilizzare sar\`{a} la seguente: \\
+\textit{<field name=''Nome\_attributo'' type=''Tipo\_attributo''/>}; \\
+Per esempio se nella classe \`{e} presente la dichiarazione: \textit{private String nome}, sar\`{a} sufficiente riportare nel file XML: \\
+\textit{<field name=''nome'' type=''String''/>}.
+
+\subparagraph{Attributo il cui tipo \`{e} un tipo composto} \quad \quad \\ \\
+Si tratta di un tipo utilizzato per raccogliere un certo numero di attributi di tipo semplice, ad esempio \`{e} il caso dell\textquoteright{}indirizzo. Per esempio una classe dichiara una variabile di tipo \textit{Indirizzo}, che presenta i seguenti attributi di tipo semplice: \textit{via, numero civico, paese}.
+La sintassi da utilizzare sar\`{a} la seguente:\\
+\textit{<composite name=''nome attribuito al tipo composto'' type=''tipo della classe composta''>} \\
+\textit{<field name=''Nome attributo java'' column=''Nome attributo colonna nel database'' type=''Tipo dell\textquoteright{}attributo''/>} \\
+\textit{</composite>}.\\
+Ovviamente, e questo vale per tutte le casistiche, il tag field pu\`{o} essere accompagnato dall\textquoteright{}impostazione di alcune propriet\`{a}, ad esempio se l\textquoteright{}attributo deve essere richiesto o meno nel db \textit{(mandatory=``true\textquoteright{}\textquoteright{})}, se l\textquoteright{}attributo deve essere ordinabile \textit{(ordered=''true'')} ecc. Nel database tutti gli attributi del tipo composto sono inglobati come attributi della tabella nella cui classe \`{e} stata indicata una dipendenza nei confronti del tipo composto, non verr\`{a} quindi realizzata una tabella a se stante rappresentante l\textquoteright{}entit\`{a} del tipo composto.
+
+\subparagraph{Relazioni tra entit\`{a}} \quad \quad \\ \\
+Si ha quindi una dipendenza tra tipi, nel database viene espressa con relazioni del tipo \textit{1:1, 1:n, m:n}. Le relazioni \textit{m:n} vengono scomposte in 2 relazioni di tipo \textit{1:n} introducendo una nuova relazione. A questo corrisponde anche una classe Java, in questo modo ad ogni relazione corrisponder\`{a} sempre una classe Java.\\
+Riporto qui un esempio del tipo di relazione in questione: \\
+nella classe \textit{OpActivity.java} si ha la seguente dichiarazione: \textit{private OpProjectPlan projectplan}; nel file XML corrispondente alla classe OpActivity.java \`{e} presente il seguente tag: \\
+\textit{<relationship name=''ProjectPlan'' type=''OpProjectPlan'' back-relationship=''Activities''/>}
+Quindi occorre indicare il nome dell\textquoteright{}attributo, il tipo e la relazione; nel file XML corrispondente alla classe OpProjectPlan.java \`{e} definito un tag che a seconda del tipo di relazione \textit{1:1 o 1:n} sar\`{a} rispettivamente: \\
+\textit{<relationship name=''Activities'' type=''OpActivity'' back-relationship=''ProjectPlan''/>}, oppure \\
+\textit{<relationship name=''Activities'' type=''OpActivity'' collection-type=''Set'' \\ back-relationship=''ProjectPlan'' cascade=''delete''/>}.\\
+L\textquoteright{}attributo name si deve riferire ad un attributo della classe Java corrispondente; in questo modo si presentano delle dipendenze cicliche. La classe \textit{OpProjectPlan.java} presenta un attributo che \`{e} una collezione di oggetti di tipo \textit{OpActivity} e la classe \textit{OpActivity.java} presenta un riferimento all\textquoteright{}oggetto di tipo \textit{OpProjectPlan} corrispondente. Questo scelta potrebbe portare a delle inconsistenze di dati a \textit{run-time}.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1\textwidth]{img/DipendenzaCiclica.png}
+\caption{Esempio di dipendenza ciclica}
+\label{fig:Esempio di dipendenza ciclica}
+\end{center}
+\end{figure}
