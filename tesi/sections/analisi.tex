@@ -92,7 +92,7 @@ Dove:
 \begin{itemize}
 \item \textbf{ob}: requisito obbligatorio
 \item \textbf{de}: requisito desiderabile
-
+\item \textbf{op}: requisito opzionale
 \end{itemize}
 \item \textbf{X.Y.V.W.Z}: numerazione di tipo gerarchica del requisito. Ad ogni requisito diverso dovr\`{a} aumentare la numerazione X. La presenza delle
 numerazioni Y, V, W e Z \`{e} opzionale. Le numerazioni di X, Y, V, W e Z partiranno da uno
@@ -102,8 +102,9 @@ Esempi: RF.ob.1.2.1, RF.de.2, RF.ob.1.2.4.2.1, ...
 \subsubsection{Requisiti funzionali}
 In questo paragrafo verranno elencati i principali requisiti relativi al progetto.
 
-\begin{description}
+\subparagraph{Requisiti obbligatori} \quad \quad 
 
+\begin{description}
 \item[RF.ob.1]: Il software nell\textquoteright{}inserimento delle attivit\`{a} deve permettere l\textquoteright{}impostazione di informazioni sull\textquoteright{}inizio e sulla fine.
 	\begin{description}
 	\item[RF.ob.1.1]: Il software deve permettere l\textquoteright{}impostazione della data di inizio e di fine.
@@ -148,3 +149,23 @@ In questo paragrafo verranno elencati i principali requisiti relativi al progett
 		\end{description}
 	\end{description}
 \end{description}
+
+\subparagraph{Requisiti desiderabili} \quad \quad 
+
+\begin{description}
+\item[RF.de.1]: Il software deve permettere la visualizzazione in ore del diagramma di Gantt.
+\item[RF.de.2]: Il software deve permettere di aggiornare il WBS in relazione alle modifiche apportate al diagramma di Gantt.
+\item[RF.de.3]: Il software deve permettere di effettuare modifiche sulla durata delle attivit\`{a} al diagramma di Gantt.
+	\begin{description}
+	\item[RF.de.3.1]: Il software deve permettere di effettuare modifiche che presentano una durata complessiva finale maggiore o uguale alla durata di un giorno.
+	\item[RF.de.3.2]: Il software deve permettere di effettuare modifiche che presentano una durata complessiva finale minore alla durata di un giorno.
+\end{description}
+\end{description}
+
+\subparagraph{Requisiti opzionali} \quad \quad 
+
+\begin{description}
+\item[RF.op.1]: Il software deve permettere l\textquoteright{}inserimento della percentuale di completamento delle attivit\`{a}.
+\item[RF.op.2]: Il software deve permettere la colorazione delle attivit\`{a} in relazione alla percentuale di completamento.
+\end{description}
+
