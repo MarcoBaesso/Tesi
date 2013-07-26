@@ -1,0 +1,116 @@
+In questa sezione viene data la specifica di quello che \`{e} stato progettatto per ogni incremento, utilizzando un linguaggio discorsivo in cui si spiegano le ragioni e le situazioni che hanno portato a determinate scelte progettuali.
+\subsection{Incremento 1}
+Il primo incremento consiste nell\textquoteright{}introduzione nella pianificazione delle attivit\`{a} nel riportare il loro inizio e fine alla precisione del minuto. Questa parte di progettazione viene tracciata con il soddisfacimento dei seguenti requisiti:
+
+\begin{longtable}{|>{\centering}p{3cm}|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Requisiti}} \\ %\tabularnewline 
+      \hline
+        RF.ob.1 \tabularnewline \hline
+		RF.ob.1.1 \tabularnewline \hline
+		RF.ob.1.2 \tabularnewline \hline
+		RF.ob.2 \tabularnewline \hline
+		RF.ob.3 \tabularnewline \hline
+    \caption{Tracciamento requisiti - Componenti incremento1}
+    \label{tab:Tracciamento requisiti - Componenti incremento1}
+\end{longtable}
+
+Le classi appartenenti al Model, che memorizzano le informazioni relative alla data di inizio e fine utilizzano, alla versione di OnePointProject scaricabile da sourceforge, un tipo \textit{java.sql.Date}; tuttavia nel database MsSQL la data di inizio e fine vengono salvate con un tipo \textit{datetime}. Quindi per questo incremento \`{e} stato scelto di cambiare il tipo \textit{java.sql.Date} con il tipo \textit{java.sql.Timestamp}, per le seguenti ragioni: data e ora memorizzate in un solo campo del database; data e ora memorizzate in un solo tipo Java; poich\`{e} l\textquoteright{}applicativo nel diagramma di Gantt utilizza per le operazioni la trasformazione della data in millisecondi \`{e} pi\`{u} facile adattare le modifiche cambiando il tipo in un tipo che presenta lo stesso metodo per ottenere i millisecondi. Quindi in questo modo il diagramma di Gantt per durate di attivit\`{a} superiore al giorno visualizzer\`{a} le attivit\`{a} nella posizione corretta rispetto all\textquoteright{}ora del giorno impostato. In questa fase occorrono anche delle modifiche da apportare ai form per l\textquoteright{}inserimento di attivit\`{a} in WBS, permettendo l\textquoteright{}inserimento dell\textquoteright{}ora di inizio e fine oltre che la data; occorre cambiare il tipo di inserimento della durata; il tipo progettato ha nominativo \textit{durationstring}. Per questo nuovo tipo occorre seguire la seguente procedura:
+\begin{description}
+\item[XComponent.java]: aggiungere \textit{case} per la visualizzazione del componente, per l\textquoteright{}impostazione del valore, per l\textquoteright{}impostazione del tipo di editor, per gli eventi che vedono coinvolto il componente.
+\item[XExpressProxy.java]: questa classe svolge la funzione di proxy di protezione per l\textquoteright{}interazione tra file di script (con estensione \textit{jes}) e i metodi delle classi \textit{Java} interessate. In questa classe \`{e} necessario aggiungere i metodi che coinvolgono il tipo interessato. Nel caso del tipo \textit{durationstring} sono stati progettati metodi di set e get del valore che il tipo racchiude.
+\item[XDefaultComponentHandler]: questa classe viene utilizzata come classe di \textit{''factory''} per i vari componenti grafici in relazione al tipo; occorre aggiungere il \textit{case} per la creazione di oggetti \textit{XComponent} di tipo \textit{durationstring}.
+\end{description}
+
+\subsection{Incremento 2}
+Il secondo incremento consiste nella creazione dei componenti necessari per la configurazione delle risorse. Questa parte di progettazione viene tracciata con il soddisfacimento dei seguenti requisiti:
+
+\begin{longtable}{|>{\centering}p{3cm}|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Requisiti}} \\ %\tabularnewline 
+      \hline
+        RF.ob.5 \tabularnewline \hline
+		RF.ob.5.1 \tabularnewline \hline
+		RF.ob.5.1.1 \tabularnewline \hline
+		RF.ob.5.1.2 \tabularnewline \hline
+		RF.ob.5.2 \tabularnewline \hline
+		RF.ob.5.3 \tabularnewline \hline
+		RF.ob.5.4 \tabularnewline \hline
+		RF.ob.5.4.1 \tabularnewline \hline
+    \caption{Tracciamento requisiti - Componenti incremento2}
+    \label{tab:Tracciamento requisiti - Componenti incremento2}
+\end{longtable}
+
+Nello sviluppo di questo incremento \`{e} necessario integrare componenti alla View, al Model e all\textquoteright{}application logic.
+In OnePointProject alla versione presa in modifica \`{e} presente un pannello di amministrazione risorse in cui \`{e} possibile impostare i costi interni o esterni per la risorsa. Al pannello in questione \`{e} stato progettata l\textquoteright{}aggiunta di nuove schede per l\textquoteright{}inserimento dei dati richiesti dai requisiti tracciati per questo incremento. Le schede da aggiungere sono 3: una per l\textquoteright{}inserimento delle fascie orarie in cui la risorsa pu\`{o} lavorare con la relativa opzione di ereditarit\`{a} delle fascie orarie dal padre per rispettare i vincoli gerarchici; una per l\textquoteright{}inserimento dei giorni in cui la risorsa non pu\`{o} lavorare e le relative fascie orarie con l\textquoteright{}opzione di ereditariet\`{a} dei giorni e delle fascie di fermo dalla risorsa padre; infine una scheda in cui si pu\`{o} impostare se la risorsa lavori o meno nei giorni festivi. Per le modifiche grafiche \`{e} sufficiente modificare il file \textit{edit\_resource.oxf.xml}.
+Nel form in cui vanno inserite le disponibilit\`{a} delle fascie orarie delle risorse \`{e} presente una tabella dalla quale \`{e} possibile effettuare l\textquoteright{}aggiunta di una fascia oraria o rimuovere una fascia selezionata. La gestione degli eventi per questo form \`{e} stata impostata in modo che essa venga attuata direttamente da una classe Java e non da un file di script, si tratta dell\textquoteright{}unico form gestito da OnePoint con la normale procedura; la classe in questione \`{e} \textit{''OpEditResourceFormHandler.java''}. A questa occorre aggiungere tutti i metodi per la gestione degli eventi ed \`{e} necessario gestire il caso in cui si ha la sovrapposizione di intervalli, ovvero fascie orarie inserite dall\textquoteright{}utente. Analogo \`{e} il comportamento della gestione della scheda per l\textquoteright{}inserimento delle fascie orarie in cui la risorsa \`{e} bloccata, con eccezione del fatto che \`{e} possibile impostare anche il giorno in cui la risorsa \`{e} bloccata. L\textquoteright{}utente pu\`{o} inserire pi\`{u} giorni in cui la risorsa \`{e} impossibilitata nel suo lavoro, il sistema non deve comunque rendere persistenti i dati fino a quando non viene effettuato il salvataggio; quindi \`{e} necessario predisporre in \textit{''OpEditResourceFormHandler.java''} un campo statico con la seguente firma \textit{public static Map<Timestamp,XComponent> mappaCalendario} ovvero la chiave sar\`{a} la data scelta e il valore sar\`{a} un set che rappresenta le fascie orarie; l\textquoteright{}inizializzazione va fatta nel momento in cui viene aperto il form per la gestione di una certa risorsa e tale mappa andr\`{a} inizialmente caricata con i dati presenti nel databasee. La mappa andr\`{a} aggiornata nel momento in cui si cambia data e/o vengono fatte aggiunte e/o rimozioni di fascie orarie. Anche il Model \`{e} stato modificato, in particolare \`{e} stato modificato \textit{OpResource.java}, per maggior chiarezza riporto qui la nuova struttura per rappresentare la risorsa interessata.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=0.80\textwidth]{img/Resource.png}
+\caption{Model: sottocomponente risorsa}
+\label{fig:Model: sottocomponente risorsa}
+\end{center}
+\end{figure}
+
+La seguenta tabella rappresenta i principali attributi caratteristici di una risorsa\\
+\begin{tabbing}
+TABLE \=op\_resource (\\
+\>    op\_resourcepool bigint,\\
+\>    op\_site bigint,\\
+\>    op\_archived bit DEFAULT (0),\\
+\>    op\_inheritpoolrate bit,\\
+\>    op\_hourlyrate numeric(22, 10),\\
+\>    op\_externalrate numeric(22, 10),\\
+\>    op\_description varchar(2500),\\
+\>    op\_user bigint,\\
+\>    op\_inheritfestivita bit, *\\
+\>    op\_festivita bit, *\\
+\>    op\_inheritfascieorarie bit, *\\
+\>    op\_inheritfascielocked bit *,\\
+\>    op\_typeresource *\\
+);
+\end{tabbing}
+\textbf{*= add by me} \\ \\
+Una risorsa appartiene ad una gerarchia di risorse identificata dall\textquoteright{}attributo op\_resorcepool, che \`{e} una risorsa stessa. Quindi nella relazione sono presenti degli attributi \textit{boolean} (di tipo \textit{bit} in mssql) che indicano se l\textquoteright{}entit\`{a} interessata (la risorsa) eredita o meno dalla risorsa padre. Una risorsa pu\`{o} ereditare dal padre i costi, la festivit\`{a}, le fascie orarie, gli impegni della risorsa.
+Una risorsa per OnePointProject \`{e} indifferente dal tipo, cio\`{e} una risorsa umana si comporta come una risorsa strumentale. Per CQT e VIDA no, quindi \`{e} stato predisposto un campo op\_resourcetype che si riferisce a una tabella che accumula i tipi della risorsa disponibile.
+L\textquoteright{}aggiunta di un tipo comporta un aggiustamento del calcolo. Per ora il calcolo viene effettuatato considerando risorse umane e strumentali.
+
+\subsection{Incremento 3}
+Il terzo incremento prevede la gestione del calcolo della durata delle attivit\`{a} in relazione al WBS pianificato. Questa parte di progettazione viene tracciata con il soddisfacimento dei seguenti requisiti:
+
+\begin{longtable}{|>{\centering}p{3cm}|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Requisiti}} \\ %\tabularnewline 
+      \hline
+        RF.ob.4 \tabularnewline \hline
+		RF.ob.4.1 \tabularnewline \hline
+		RF.ob.4.1.1 \tabularnewline \hline		
+		RF.ob.4.1.1.1 \tabularnewline \hline
+		RF.ob.4.1.1.2 \tabularnewline \hline
+		RF.ob.4.1.1.3 \tabularnewline \hline
+		RF.ob.4.1.2 \tabularnewline \hline
+		RF.ob.4.1.2.1 \tabularnewline \hline
+		RF.ob.4.1.2.2 \tabularnewline \hline
+		RF.ob.4.1.2.2.1 \tabularnewline \hline
+		RF.ob.4.1.2.2.2 \tabularnewline \hline
+		RF.ob.4.1.3 \tabularnewline \hline
+    \caption{Tracciamento requisiti - Componenti incremento3}
+    \label{tab:Tracciamento requisiti - Componenti incremento3}
+\end{longtable}
+	
+\subsection{Incremento 4}
+Il quarto incremento consiste nella possibilit\`{a} di modificare graficamente il diagramma di Gantt e di apportare modifiche al WBS nel caso in cui venga modificata la durata delle attivit\`{a} del diagramma di Gantt, con incrementi o decrementi di durata inferiore alle 24 ore. Questa parte di progettazione viene tracciata con il soddisfacimento dei seguenti requisiti:
+
+\begin{longtable}{|>{\centering}p{3cm}|}
+    \hline
+    \multicolumn{1}{|c|}{\textbf{Requisiti}} \\ %\tabularnewline 
+      \hline
+        RF.de.1 \tabularnewline \hline
+		RF.de.2 \tabularnewline \hline
+		RF.de.3 \tabularnewline \hline
+		RF.de.3.1 \tabularnewline \hline
+		RF.de.3.2 \tabularnewline \hline
+    \caption{Tracciamento requisiti - Componenti incremento4}
+    \label{tab:Tracciamento requisiti - Componenti incremento4}
+\end{longtable}
