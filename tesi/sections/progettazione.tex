@@ -98,7 +98,26 @@ Il terzo incremento prevede la gestione del calcolo della durata delle attivit\`
     \caption{Tracciamento requisiti - Componenti incremento3}
     \label{tab:Tracciamento requisiti - Componenti incremento3}
 \end{longtable}
-	
+
+Il calcolo viene effettuato nel momento in cui l\textquoteright{}utente decide di effettuare un\textquoteright{}operazione di salvataggio. Viene effettuato, quindi eventualmente aggiornato nel momento in cui, viene cambiata la data di inizio\/fine di un\textquoteright{}attivit\`{a}, quindi la durata, oppure nel momento in cui viene fatta una modifica agli assegnamenti delle attivit\`{a}, modificandoli eliminandoli o inserendone di nuovi. Per fare ci\`{o} nel pi\`{u} semplice modo possibile occorre aggiungere al metodo di salvataggio gi\`{a} previsto dall\textquoteright{}applicativo il metodo con la seguente firma \\
+\textit{eseguiCalcolo(OpBroker broker,OpProjectSession session,OpProjectPlanVersion project);} \\
+Un oggetto di tipo \textit{OpBroker} viene utilizzato quando sono necessarie operazioni con il database; la classe \textit{OpBroker.java} presenta metodi per effettuare query e operazioni di CRUD su ennuple e quindi su oggetti. Un oggetto di tipo \textit{OpProjectSession} \`{e} necessario per aprire transazioni e svolge il ruolo di sessione vera e propria ovvero identifca l\textquoteright{}utente autenticato al sistema. Un oggetto di tipo OpProjectPlanVersion al fine di identificare il progetto in modifica, con un diagramma delle classi cercher\`{o} di spiegare la funzionalit\`{a} delle classi che riportano alla fine del nome la parola \textit{''Version''}.
+
+\begin{landscape}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=1.6\textwidth]{img/ModelIncremento2.png}
+\caption{Model: sottocomponente versionamento}
+\label{fig:Model: sottocomponente versionamento}
+\end{center}
+\end{figure}
+\end{landscape}.
+
+Il versionamento delle attivit\`{a} non funziona come un repository. La funzionalit\`{a} \`{e} quella di rendere visibili a tutti le informazioni del progetto all\textquoteright{}ultimo ''check-in'' effettuato, in questo modo se un utente sta modificando il progetto le sue modifiche non verranno viste da tutti fino al suo prossimo ''check-in''. In pratica si tratta di lock in scrittura e la lettura \`{e} permessa all\textquoteright{}ultima versione per cui \`{e} stato fatto il ''check-in''.
+Nel momento in cui viene effettuata una operazione di salvataggio viene creato un oggetto di tipo \textit{OpActivityVersion} o al massimo esso viene aggiornato, sempre all\textquoteright{}ultima versione ovviamente. Quando si effettua il ''check-in'' viene a crearsi un oggetto di tipo \textit{OpActivity}, che \`{e} la copia di ci\`{o} che \`{e} riportato in \textit{OpActivityVersion} all\textquoteright{}ultima versione del piano di progetto.
+Un oggetto di tipo \textit{OpProjectPlan} viene creato nel momento in cui si crea un oggetto di tipo \textit{OpProjectNode}, quindi esister\`{a} sempre almeno un oggetto di tipo \textit{OpProjectPlan} riferito al nuovo progetto. Nel momento in cui si salvano le prime attivit\`{a} si crea anche un oggetto di tipo \textit{OpProjectPlanVersion}. Il versionamento \`{e} previsto anche per gli assegnamenti delle risorse alle attivit\`{a}, quindi \`{e} presente una classe \textit{OpAssignment} e una classe \textit{OpAssignmentVersion}.
+
+
 \subsection{Incremento 4}
 Il quarto incremento consiste nella possibilit\`{a} di modificare graficamente il diagramma di Gantt e di apportare modifiche al WBS nel caso in cui venga modificata la durata delle attivit\`{a} del diagramma di Gantt, con incrementi o decrementi di durata inferiore alle 24 ore. Questa parte di progettazione viene tracciata con il soddisfacimento dei seguenti requisiti:
 
