@@ -1,0 +1,12 @@
+\subsection{Strumenti e tecniche di verifica}
+Gli strumenti utilizzati sono forniti da Eclipse; in particolare è stato pesantemente utilizzato il debugger, il quale facilita la visione dei contenuti delle varie strutture dati a tempo di esecuzione ed evidenzia per il test-case in questione i dati prodotti permettendo in caso di errore di indagare su quali componenti occorre applicare delle correzioni immediate o comunque da sottoporre a correzione in un momento successivo e in quest'ultimo caso segnalando un ticket attraverso uno strumento messo a disposizione dall'azienda \textit{RedMine}. Per la verifica sono state svolte le seguenti 2 tecniche:
+\begin{itemize}
+\item \textbf{analisi statica}: realizzata dagli strumenti di sviluppo utilizzati che evidenziano eventuali errori commessi, che il flusso di controllo possa essere raggiunto e che i dati non assumano valori illegali o senza senso;
+\item \textbf{analisi dinamica}: sono stati pianificati i test di unità per ogni metodo, indicando nel documento di qualifica del prodotto, identificativo del test e relativi esiti. Sono stati definiti i casi di prova per ogni metodo analizzando il codice dei metodi quindi sono stati effettuati test di tipo white-box, seguendo per ognuno il debugging. Per i metodi aggiunti dalla progettazione e dal debugging sono stati ricavati i flussi di dati e di chiamata al fine di integrare le componenti con la più scarsa possibilità di errors; lo strumento utilizzato per lo svolgimento dei test di unità e integrazinoe è stato JUnit. Le procedure di verifica hanno includevano la seguente checklist:
+	\begin{enumerate}
+	\item \textbf{verifica strutture dati}: sono state controllate le strutture dati utilizzate come tipo di ritorno di un metodo; sono stati controllati gli oggetti immagazzinati in iteratori, prevalentemente come risultato di query;
+	\item \textbf{inserimento dei dati}: è stato verificata la corretta interazione del software con l'utente e il comportamento in caso di errori in inserimenti dati e il comportamento in caso di inserimenti corretti; è stato controllato anche l'inserimento dei dati nel database e il comportamento in caso di commit o rollback di transazioni;
+	\end{enumerate}
+\end{itemize}
+
+\subsection{Collaudo finale}
