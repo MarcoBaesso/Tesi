@@ -9,8 +9,8 @@
 \newcommand{\numref}[1]{\textsf{\textsl{``\nameref{#1}'' (\ref{#1})}}}
 %**IMPORTAZIONE PACKAGE**************************
 \usepackage{ifthen}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[latin1]{inputenc}
 \usepackage[italian]{babel}
 \usepackage{xspace}
 \usepackage{float}
@@ -45,6 +45,9 @@
 \usepackage{pgf}
 \usepackage{caption}
 \usepackage{subfigure}
+\usepackage{listings} %Per inserire codice
+\usepackage{color}
+
 \usepackage{setspace}
 \usepackage{lscape}
 \hypersetup{colorlinks=true, linkcolor=blue, anchorcolor=blue, urlcolor=blue} 
@@ -73,9 +76,6 @@
 }
 \glossarystyle{altlistgroupmod}
 
-% Listings
-\usepackage{listings}
-\usepackage{color}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{dkred}{rgb}{0.6,0,0}

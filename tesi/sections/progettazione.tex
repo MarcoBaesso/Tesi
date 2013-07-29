@@ -99,7 +99,7 @@ Il terzo incremento prevede la gestione del calcolo della durata delle attivit\`
     \label{tab:Tracciamento requisiti - Componenti incremento3}
 \end{longtable}
 
-Il calcolo viene effettuato nel momento in cui l\textquoteright{}utente decide di effettuare un\textquoteright{}operazione di salvataggio. Viene effettuato, quindi eventualmente aggiornato nel momento in cui, viene cambiata la data di inizio\/fine di un\textquoteright{}attivit\`{a}, quindi la durata, oppure nel momento in cui viene fatta una modifica agli assegnamenti delle attivit\`{a}, modificandoli eliminandoli o inserendone di nuovi. Per fare ci\`{o} nel pi\`{u} semplice modo possibile occorre aggiungere al metodo di salvataggio gi\`{a} previsto dall\textquoteright{}applicativo il metodo con la seguente firma \\
+Il calcolo viene effettuato nel momento in cui l\textquoteright{}utente decide di effettuare un\textquoteright{}operazione di salvataggio. Viene effettuato, quindi eventualmente aggiornato nel momento in cui, viene cambiata la data di inizio o di fine di un\textquoteright{}attivit\`{a}, quindi la durata, oppure nel momento in cui viene fatta una modifica agli assegnamenti delle attivit\`{a}, modificandoli eliminandoli o inserendone di nuovi. Per fare ci\`{o} nel pi\`{u} semplice modo possibile occorre aggiungere al metodo di salvataggio gi\`{a} previsto dall\textquoteright{}applicativo il metodo con la seguente firma: \\
 \textit{eseguiCalcolo(OpBroker broker,OpProjectSession session,OpProjectPlanVersion project);} \\
 Un oggetto di tipo \textit{OpBroker} viene utilizzato quando sono necessarie operazioni con il database; la classe \textit{OpBroker.java} presenta metodi per effettuare query e operazioni di CRUD su ennuple e quindi su oggetti. Un oggetto di tipo \textit{OpProjectSession} \`{e} necessario per aprire transazioni e svolge il ruolo di sessione vera e propria ovvero identifca l\textquoteright{}utente autenticato al sistema. Un oggetto di tipo \textit{OpProjectPlanVersion} al fine di identificare il progetto in modifica; con un diagramma delle classi cercher\`{o} di spiegare la funzionalit\`{a} delle classi che sono etichettate con la parola \textit{''Version''}.
 
@@ -116,9 +116,47 @@ Un oggetto di tipo \textit{OpBroker} viene utilizzato quando sono necessarie ope
 Il versionamento delle attivit\`{a} non funziona come un repository. La funzionalit\`{a} \`{e} quella di rendere visibili a tutti le informazioni del progetto all\textquoteright{}ultimo ''check-in'' effettuato, in questo modo se un utente sta modificando il progetto le sue modifiche non verranno viste da tutti fino al suo prossimo ''check-in''. In pratica si tratta di lock in scrittura e la lettura \`{e} permessa all\textquoteright{}ultima versione creato con l\textquoteright{}ultimo ''check-in''.
 Nel momento in cui viene effettuata una operazione di salvataggio viene creato un oggetto di tipo \textit{OpActivityVersion} o al massimo esso viene aggiornato, sempre all\textquoteright{}ultima versione ovviamente. Quando si effettua il ''check-in'' viene a crearsi un oggetto di tipo \textit{OpActivity}, che \`{e} la copia di ci\`{o} che \`{e} riportato in \textit{OpActivityVersion} all\textquoteright{}ultima versione in moodifica del piano di progetto.
 Un oggetto di tipo \textit{OpProjectPlan} viene creato nel momento in cui si crea un oggetto di tipo \textit{OpProjectNode}, quindi esister\`{a} sempre almeno un oggetto di tipo \textit{OpProjectPlan} riferito al nuovo progetto. Nel momento in cui si salvano le prime attivit\`{a} si crea anche un oggetto di tipo \textit{OpProjectPlanVersion}. Il versionamento \`{e} previsto anche per gli assegnamenti delle risorse alle attivit\`{a}, quindi \`{e} presente una classe \textit{OpAssignment.java} e una classe \textit{OpAssignmentVersion.java}.\\
-L\textquoteright{}algoritmo che effettua il calcolo della durata effettiva delle attivit\`{a} necessita dell\textquoteright{}introduzione di una nuova relazione e quindi una nuova classe, \textit{OpAssignmentFascie.java} la cui funzionalit\`{a} \`{e} quello di rappresentare un modello di dati per le fascie orarie in cui una determinata risorsa assegnata ad una certa attivit\`{a} effettua il lavoro. In OnePointProject gli assegnamenti di una risorsa ad un certa attivit\`{a} vengono rappresentati con oggetti di tipo \textit{OpAssignment} e quindi \textit{OpAssignmentVersion}; la nuova relazione creata necessita solo delle informazioni relative a \textit{OpAssignmentVersion}. Infatti l\textquoteright{}algoritmo deve essere applicato acquisendo un ''lock'' sulla scrittura nella relazione OpAssignmentFascie, ovvero l\textquoteright{}esecuzione del calcolo dell\textquoteright{}algoritmo non potr\`{a} mai essere eseguito contemporaneamente su pi\`{u} di 1 progetto; questo perch\`{e} l\textquoteright{}algoritmo controlla se la risorsa \`{e} occupata da altri pogetti in una medesima fascia oraria, quindi se pi\`{u} salvataggi su progetti diversi sono in esecuzione la situazione finale genera un calcolo non veritiero in caso di assenza di ''lock''. Inoltre per le stesse ragioni il salvataggio dovr\`{a} considerare gli assegnamenti inseriti sempre all\textquoteright{}ultima versione per cui \`{e} stato fatta l\textquoteright{}operazione di salvataggio e non all\textquoteright{}ultima versione per cui \`{e} stato fatto il ''check-in''. Quindi nel momento in cui dopo aver effettuto l\textquoteright{}operazione di ''check-in'' si entra in modifica nel progetto, OnePointProject effettua la creazione di nuovi oggetti versionati, quindi gli oggetti coinvolti presenteranno il tipo di \textit{OpProjectPlanVersion, OpActivityVersion, OpAssignmentVersion,} che sono la copia degli oggetti presenti all\textquoteright{}ultimo ''check-in''; le nuove modifiche che verranno salvate verranno salvate su questi oggetti appositamente creati. Occorre tuttavia apportare anche degli aggiornamenti alle ennuple presenti nell\textquoteright{}entit\`{a} \textit{OpAssignmentFascie}; infatti poich\`{e} l\textquoteright{}algoritmo controlla le fascie orarie degli assegnamenti inseriti all\textquoteright{}ultima versione di progetto occorre aggiornare gli assegnamenti inseriti nell\textquoteright{}entit\`{a} \textit{OpAssignmentFascie} con gli identificativi degli assegnamenti creati entrando in modifica nel progetto. 
+L\textquoteright{}algoritmo che effettua il calcolo della durata effettiva delle attivit\`{a} necessita dell\textquoteright{}introduzione di una nuova relazione e quindi una nuova classe, \textit{OpAssignmentFascie.java} la cui funzionalit\`{a} \`{e} quello di rappresentare un modello di dati per le fascie orarie in cui una determinata risorsa assegnata ad una certa attivit\`{a} effettua il lavoro. In OnePointProject gli assegnamenti di una risorsa ad un certa attivit\`{a} vengono rappresentati con oggetti di tipo \textit{OpAssignment} e quindi \textit{OpAssignmentVersion}; la nuova relazione creata necessita solo delle informazioni relative a \textit{OpAssignmentVersion}. Infatti l\textquoteright{}algoritmo deve essere applicato acquisendo un ''lock'' sulla scrittura nella relazione OpAssignmentFascie, ovvero l\textquoteright{}esecuzione del calcolo dell\textquoteright{}algoritmo non potr\`{a} mai essere eseguito contemporaneamente su pi\`{u} di 1 progetto; questo perch\`{e} l\textquoteright{}algoritmo controlla se la risorsa \`{e} occupata da altri pogetti in una medesima fascia oraria, quindi se pi\`{u} salvataggi su progetti diversi sono in esecuzione la situazione finale genera un calcolo non veritiero in caso di assenza di ''lock''. Inoltre per le stesse ragioni il salvataggio dovr\`{a} considerare gli assegnamenti inseriti sempre all\textquoteright{}ultima versione per cui \`{e} stato fatta l\textquoteright{}operazione di salvataggio e non all\textquoteright{}ultima versione per cui \`{e} stato fatto il ''check-in''. Quindi nel momento in cui dopo aver effettuto l\textquoteright{}operazione di ''check-in'' si entra in modifica nel progetto, OnePointProject effettua la creazione di nuovi oggetti versionati, quindi gli oggetti coinvolti presenteranno il tipo di \textit{OpProjectPlanVersion, OpActivityVersion, OpAssignmentVersion,} che sono la copia degli oggetti presenti all\textquoteright{}ultimo ''check-in''; le nuove modifiche che verranno salvate verranno salvate su questi oggetti appositamente creati. Occorre tuttavia apportare anche degli aggiornamenti alle ennuple presenti nell\textquoteright{}entit\`{a} \textit{OpAssignmentFascie}; infatti poich\`{e} l\textquoteright{}algoritmo controlla le fascie orarie degli assegnamenti inseriti all\textquoteright{}ultima versione di progetto occorre aggiornare gli assegnamenti inseriti nell\textquoteright{}entit\`{a} \textit{OpAssignmentFascie} con gli identificativi degli assegnamenti creati entrando in modifica nel progetto. Di seguito riporto l\textquoteright{}algoritmo che dovrà essere applicato per effettuare il calcolo con la precisione espressa nei requisiti.
+ 
+\newpage
+\begin{lstlisting}[caption={Algoritmo che calcola la durata delle attivit\`{a}}]
+//acquisizione lock
+//activityPlanVersion ha tipo Iterator e contiene le attività del progetto all'ultimo versionamento
+while (activityPlanVersion.hasNext()){
+	OpActivityVersion activityVersion=activityPlanVersion.next();
+	//creazione di una mappa che presenta come chiave la risorsa e come valore l'impegno residuo della risorsa
+	HashMap<OpResource,Double>resources = new HashMap<OpResource,Double>();
+	//assignmentsVersion ha tipo Iterator e contiene gli assegnamenti predisposti per l'attività activityVersion
+	if (assignmentsVersion.hasNext){
+		while (assignmentsVersion.hasNext()){
+			OpResource resource=assignmentsVersion.next();
+			resources.put(resource,resource.getBaseEffort());
+		}
+		//salvataggio nella variabile time l'ora di inizio dell'attività
+		Timestamp time=new Timestamp(activityVersion.getStart().getTime();)
+		Integer durata=0;
+		//il ciclo continua fino a quando esiste almeno una risorsa il cui impegno residuo è maggiore di 0
+		while (remainingEffort(resources)){
+			//selezionare le risorse disponibili in base ai requisiti fissati
+			Collection<OpResource> resourcesAvailable=getResourceAvailable(broker,time,
+			resources.keySet,planVersion,activityVersion);
+			//diminuire l'impegno delle risorse in base al loro tipo, eliminando eventualmente le risorse se hanno colmato l'impegno
+			OpResourceCalcoloHelper.diminuisciEffort(resourcesAvailable,
+			resources);
+			//aggiornamento per le risorse disponibili l'occupazione nel tempo time
+			durata++;
+			time=new Timestamp(time.getTime()+1000*60);
+		}
+		//modifica della data di fine in base alla durata calcolata
+		updateFine(activityVersion,durata);
+	}
+}	
+//unlock
+\end{lstlisting}
 
+Per rendere il pi\`{u} indipendente possibile la relazione tra l\textquoteright{}algoritmo e il tipo delle risorse \`{e} stata introdotta la classe \textit{OpResourceCalcoloHelper.java} la cui utilit\`{a} \`{e} di richiamare il metodo opportuno di diminuzione dell\textquoteright{}impegno residuo in base al tipo della risorsa.
 
+\newpage
 \subsection{Incremento 4}
 Il quarto incremento consiste nella possibilit\`{a} di modificare graficamente il diagramma di Gantt e di apportare modifiche al WBS nel caso in cui venga modificata la durata delle attivit\`{a} del diagramma di Gantt, con incrementi o decrementi di durata inferiore alle 24 ore. Questa parte di progettazione viene tracciata con il soddisfacimento dei seguenti requisiti:
 
