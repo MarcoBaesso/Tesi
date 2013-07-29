@@ -1,4 +1,8 @@
-In questa sezione vengono elencate le regole e procedure stabilite per codificare ciò che è stato previsto dalla progettazione.
+In questa sezione vengono elencati gli stumenti di sviluppo, le regole e le procedure stabilite per codificare ciò che è stato previsto dalla progettazione.
+
+\subsection{Strumenti di sviluppo}
+L'azienda ha imposto e predisposto l'installazione di Eclipse Juno; questo può essere utilizzato per la produzione di software di vario genere fornendo un completo IDE per il linguaggio Java. La piattaforma di sviluppo è incentrata sull'uso di plug-in che possono essere da chiunque sviluppati. Alla versione installata è stato aggiunto il plug-in Eclipse Subversive, al fine di versionare il codice. Il repository è stato creato sui server aziendali. Sullo stesso sono stati aggiunti anche i documenti tecnici sviluppati durante la fase di manutenzione.
+
 \subsection{Procedure}
 Per la codifica è stata seguita la seguente procedura:
 \newcommand{\circleditem}[1]{\tikz[baseline=-0.4em] \draw node[draw,circle,inner sep=0,align=center] {\scriptsize \makebox[3mm]{#1}};}
@@ -10,7 +14,12 @@ Per la codifica è stata seguita la seguente procedura:
 \item applicazione di commenti al codice;
 \item riportare nel changelog le modifiche applicate.
 \end{enumerate}
-A incremento codificato è necessario procedere con i test di integrazione.\\
+A incremento codificato è necessario procedere con i test di integrazione. Non essendo stata comunicata una prassi aziendale riguardante la documentazione del codice si sono scelti i seguenti metodi di documentazione:
+\begin{itemize}
+\item \textbf{commenti interni al codice}: le righe di codice che potrebbero risultare di comprensione non intuitiva o di una certa complessità devono essere commentate, fornendo dettagli tecnici;
+\item \textbf{architettura di dettaglio}: oltre all'identificazione delle classi da modificare e ai diagrammi delle classi relativi alle integrazioni occorre fornire una documentazione sui metodi da implementare munendoli di firma e di una descrizione sulle funzionalità che essi compiono.
+\end{itemize}
+
 
 Procedura di modifica architettura:
 \begin{enumerate}[label=\protect\circleditem{\theenumi}]
