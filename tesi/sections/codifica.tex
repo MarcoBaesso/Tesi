@@ -1,0 +1,35 @@
+In questa sezione vengono elencate le regole e procedure stabilite per codificare ciò che è stato previsto dalla progettazione.
+\subsection{Procedure}
+Per la codifica è stata seguita la seguente procedura:
+\newcommand{\circleditem}[1]{\tikz[baseline=-0.4em] \draw node[draw,circle,inner sep=0,align=center] {\scriptsize \makebox[3mm]{#1}};}
+\begin{enumerate}[label=\protect\circleditem{\theenumi}]
+\item ciclare sugli incrementi progettati;
+\item debugging per identificare le componenti che si integrano con l'incremento pianificato e progettato;
+\item codifica;
+\item test di unità;
+\item applicazione di commenti al codice;
+\item riportare nel changelog le modifiche applicate.
+\end{enumerate}
+A incremento codificato è necessario procedere con i test di integrazione.\\
+
+Procedura di modifica architettura:
+\begin{enumerate}[label=\protect\circleditem{\theenumi}]
+\item modifica classi Model;
+\item modifica file con estensione *.opt.xml al fine di aggiornare le relazioni del database;
+\item modifica dei file con estensione *.oxf.xml al fine di modificare le View necessarie;
+\item modifica dei file di script che gestiscono gli eventi;
+\item modifica delle classi Java, che svolgono la funzionalità di handler degli eventi;
+\item modifica dell'application logic.
+\end{enumerate}
+
+
+\subsection{Regole}
+Le regole principali che sono state seguite sono le seguenti:
+\begin{enumerate}[label=\protect\circleditem{\theenumi}]
+\item in accordo con la progettazione non violare le dipendenze previste dall'architettura;
+\item adottare il principio zero warnings;
+\item limitare la complessità ciclomatica ad un livello pari a 5;
+\item il codice deve presentare l'indentazione adottata dall'applicativo;
+\item 1 riga = 1 istruzione;
+\item non violare regole di codifica adottate dall'applicativo.
+\end{enumerate}
