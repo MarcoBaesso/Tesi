@@ -103,15 +103,15 @@ Il calcolo viene effettuato nel momento in cui l\textquoteright{}utente decide d
 \textit{eseguiCalcolo(OpBroker broker,OpProjectSession session,OpProjectPlanVersion project);} \\
 Un oggetto di tipo \textit{OpBroker} viene utilizzato quando sono necessarie operazioni con il database; la classe \textit{OpBroker.java} presenta metodi per effettuare query e operazioni di CRUD su ennuple e quindi su oggetti. Un oggetto di tipo \textit{OpProjectSession} \`{e} necessario per aprire transazioni e svolge il ruolo di sessione vera e propria ovvero identifca l\textquoteright{}utente autenticato al sistema. Un oggetto di tipo \textit{OpProjectPlanVersion} al fine di identificare il progetto in modifica; con un diagramma delle classi cercher\`{o} di spiegare la funzionalit\`{a} delle classi che sono etichettate con la parola \textit{''Version''}.
 
-\begin{landscape}
+%\begin{landscape}
 \begin{figure}[H]
 \begin{center}
-\includegraphics[width=1.6\textwidth]{img/ModelIncremento3.png}
+\includegraphics[width=1.6\textwidth,angle=90]{img/ModelIncremento3.png}
 \caption{Model: sottocomponente versionamento}
 \label{fig:Model: sottocomponente versionamento}
 \end{center}
 \end{figure}
-\end{landscape}.
+%\end{landscape}.
 
 Il versionamento delle attivit\`{a} non funziona come un repository. La funzionalit\`{a} \`{e} quella di rendere visibili a tutti le informazioni del progetto all\textquoteright{}ultimo ''check-in'' effettuato, in questo modo se un utente sta modificando il progetto le sue modifiche non verranno viste da tutti fino al suo prossimo ''check-in''. In pratica si tratta di lock in scrittura e la lettura \`{e} permessa all\textquoteright{}ultima versione creato con l\textquoteright{}ultimo ''check-in''.
 Nel momento in cui viene effettuata una operazione di salvataggio viene creato un oggetto di tipo \textit{OpActivityVersion} o al massimo esso viene aggiornato, sempre all\textquoteright{}ultima versione ovviamente. Quando si effettua il ''check-in'' viene a crearsi un oggetto di tipo \textit{OpActivity}, che \`{e} la copia di ci\`{o} che \`{e} riportato in \textit{OpActivityVersion} all\textquoteright{}ultima versione in moodifica del piano di progetto.
